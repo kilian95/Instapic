@@ -1,0 +1,9 @@
+.search.hidden
+	= form_tag(pins_path, method: :get) do
+		%span.glyphicon.glyphicon-search
+		= text_field_tag :term, params[:term], :placeholder => 'Search...'
+  
+
+
+
+

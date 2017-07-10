@@ -1,0 +1,58 @@
+
+.box.panel.panel-default 
+	.infoContainer
+		.titleContainer
+			%h4.alignLeft
+				.avatarContainer
+					= image_tag @user.avatar.url.to_s
+				= @user.Username
+			%h4.alignRight
+				= link_to edit_user_registration_path(@user_id), class: "btn btn-default" do
+					%span.glyphicon.glyphicon-cog
+		%ul.nav.navbar-nav.navbar-center.custom
+			%li 
+				%h4 Posts				
+				=@user.pins.count
+			%li	
+				%h4 Followers 
+				=@user.followers.count
+			%li
+				%h4 Following				
+				=@user.following.count
+
+	-if user_signed_in?	&& current_user != @user 		
+		-if current_user.following?(@user)
+		
+			=render 'unfollow'
+			
+		-else
+			=render 'follow'
+	-elsif user_signed_in? && current_user == @user 
+		%h4 Edit Profile			 			
+#show.container 
+	.row
+		=render 'pins/content' 
+=render 'map'                         
+															
+:javascript
+	
+
+	// Get the modal
+	var modal = document.getElementById('myModal');
+
+	// Get the image and insert it inside the modal - use its "alt" text as a caption
+	var img = document.getElementById('myImg');
+	var modalImg = document.getElementById("img01");
+	var captionText = document.getElementById("caption");
+	img.onclick = function(){
+	    modal.style.display = "block";
+	    
+	}
+
+	 // Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	 // When the user clicks on <span> (x), close the modal
+	span.onclick = function() { 
+	  modal.style.display = "none";
+	}

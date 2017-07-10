@@ -1,0 +1,15 @@
+.imgContainer= image_tag @pin.image.url
+%h1= @pin.title
+%h1= @pin.description
+%p Submitted by
+= @pin.user.email
+
+= link_to like_pin_path(@pin), method: :put, class: "btn btn-default" do
+	%span.glyphicon.glyphicon-heart
+	= @pin.get_upvotes.size
+	=link_to "Back", root_path
+-if user_signed_in?
+	=link_to "Edit", edit_pin_path
+	=link_to "Delete", pin_path, method: :delete, data: {confirm: "Are you sure? "}
+-else
+	

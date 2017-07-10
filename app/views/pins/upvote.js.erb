@@ -1,0 +1,10 @@
+$('.btn-default').bind('ajax:success', function() {
+ $(this).closest(".captionContainer").find('.vcount-<%= @pin.id %>').html('<%=escape_javascript @pin.get_upvotes.size.to_s %>');
+});
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+
+%html
+%head
+	%title InstaPic
+	= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+	= javascript_include_tag 'application', 'data-turbolinks-track' => true
+	= csrf_meta_tags
+	= javascript_include_tag "jquery", "application"
+
+%body
+	.getApp
+		%a{:href => "https://play.google.com/store/apps/details?id=com.instagram.android"} Get the app
+		%span.glyphicon.glyphicon-remove
+
+	-if user_signed_in?
+		.navIcons
+			%nav.navbar.navbar-default.custom
+			
+				.col-md-2
+					= link_to root_path, class: "btn btn-default" do
+						%span.glyphicon.glyphicon-home
+
+				.col-md-2
+					= link_to new_pin_path, class: "btn btn-default" do
+						%span.glyphicon.glyphicon-camera
+				.col-md-2
+					= link_to user_path(current_user.id), class: "btn btn-default" do
+						%span.glyphicon.glyphicon-user 
+				.col-md-2
+					%span.glyphicon.glyphicon-search
+				.col-md-2
+					= link_to destroy_user_session_path, method: :delete, class: "btn btn-default" do
+						%span.glyphicon.glyphicon-log-out	
+
+			= render 'pins/search'	
+		
+
+	- else
+				
+	.container
+		- flash.each do |name, msg|
+			= content_tag :div, msg, class: "alert alert-info"
+		= yield
+
+
+-#.nlkavbar-brand= link_to "InstaPicc", root_path
+
+:javascript
+	$(document).ready(function() 
+	{
+		$(".glyphicon.glyphicon-search").click(function()
+		{
+			$('.search').removeClass('hidden');
+
+		});
+
+		$(".glyphicon.glyphicon-remove").click(function()
+		{
+			$(".getApp").animate({top: '30px'});
+			
+
+		});
+
+		$(window).one('scroll', function() //only do once on scroll
+		{
+			$(".getApp").animate({bottom: '30px'});
+			$(".getApp").animate({bottom: '10px'});
+			$(".getApp").animate({bottom: '20px'});
+			$(".getApp").animate({bottom: '10px'});
+
+			
+			
+		}); 
+
+	});
+

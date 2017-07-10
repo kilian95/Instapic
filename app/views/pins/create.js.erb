@@ -1,0 +1,4 @@
+$('.comm').bind('ajax:success', function() {
+ $(this).closest(".commentContainer").find('.comm-<%= @pin.id %>').html('<%=escape_javascript @comment.content.to_s %>');
+});
+

@@ -1,0 +1,76 @@
+-if user_signed_in?
+
+	.searchContainer
+		-#=render 'search'
+	#pins.transitions-enabled
+		- @pins.each do |pin|
+
+			.box.panel.panel-default 
+				.infoContainer
+					.titleContainer
+						%h4.alignLeft
+							.avatarContainer
+								= image_tag pin.user.avatar.url.to_s
+							=link_to (pin.user.Username), user_path(pin.user_id)  #Clicking username: Shows all posts of specific user. 
+						%h4.alignRight
+							=pin.created_at.to_time.strftime('%B %e at %l:%M %p')
+				.imgContainer=link_to (image_tag pin.image.url.to_s), like_pin_path(pin), method: :put, remote: true  #Clicking image: likes the comment. Change to double click
+				#y.panel-body
+				.captionContainer
+					%h4.desc 
+						%strong
+							.like
+								%span{:class => "vcount-#{pin.id}"}= pin.get_upvotes.size
+								-if pin.get_upvotes.size == 1
+									Like
+								-elsif pin.get_upvotes.size > 1
+									Likes 
+								<br>
+							.username
+								=link_to (pin.user.Username), user_path(pin.user_id)
+						= pin.description
+					
+
+					- if pin.comments
+						- pin.comments.each do |comment|
+							.commentContainer
+								%h4.desc
+									%strong
+										=link_to (comment.user.Username), user_path(comment.user_id)
+									= comment.content	
+									-# if comment.user == current_user
+										-#= link_to pin_comment_path(pin, comment), method: :delete, data: { confirm: "Are you sure?" }			
+
+					.userFeedback{:class => "vote-count bind-#{pin.id}"}
+										
+						= link_to like_pin_path(pin), method: :put, remote: true, class: "btn btn-default" do
+							-if current_user.voted_up_on? pin
+								%span.red.glyphicon.glyphicon-heart
+							-else	
+								%span.black.glyphicon.glyphicon-heart
+						.comment-form
+							= form_for [pin, pin.user.comments.new] do |f|		
+								= f.text_field :content, placeholder: 'Add a comment...' 		
+						
+						%span.glyphicon.glyphicon-option-horizontal		
+
+
+-else 
+	=render 'index' # User can not use site without loggin in first
+
+:javascript
+	$(document).ready(function() 
+	{
+		$(".searchContainer").click(function()
+		{
+			$(".this").show();
+		});
+
+	
+		$(".test").click(function()
+		{
+			alert("hello");			
+		});
+
+	});
+
